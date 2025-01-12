@@ -2,15 +2,25 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-
-# 모델 로드
-model = joblib.load('python_project/model/optimized_rf_model.pkl')
+import os
 
 # 페이지 설정
 st.set_page_config(page_title='Insurance Premium Prediction', page_icon=':money_with_wings:', layout='wide')
 
 # 페이지 헤더
 st.title('Insurance Premium Prediction')
+
+# 절대 경로 설정
+BASE_DIR = r'D:\python_project'
+
+# 모델 로드
+@st.cache_resource
+def load_prediction_model():
+    model_path = os.path.join(BASE_DIR, 'model', 'optimized_rf_model.pkl')
+    return joblib.load(model_path)
+
+model = load_prediction_model()
+st.write("### Model Loaded Successfully!")
 
 # 사용자 입력 폼
 st.sidebar.header('User Input Features')
